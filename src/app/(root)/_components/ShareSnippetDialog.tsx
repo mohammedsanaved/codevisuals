@@ -1,7 +1,7 @@
 import { useCodeEditorStore } from '@/store/useCodeEditor';
-import { useMutation } from 'convex/react';
+// import { useMutation } from 'convex/react';
 import { useState } from 'react';
-import { api } from '../../../../convex/_generated/api';
+// import { api } from '../../../../convex/_generated/api';
 import { XIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -10,10 +10,10 @@ import { useUser } from '@clerk/nextjs';
 function ShareSnippetDialog({ onClose }: { onClose: () => void }) {
   const [title, setTitle] = useState('');
   const [isSharing, setIsSharing] = useState(false);
-  const { language, getCode } = useCodeEditorStore();
+  const { getCode } = useCodeEditorStore();
   const { isSignedIn } = useUser();
 
-  const createSnippet = useMutation(api.snippets.createSnippet);
+  // const createSnippet = useMutation(api.snippets.createSnippet);
 
   const handleShare = async (e: React.FormEvent) => {
     // debugger;
@@ -25,7 +25,7 @@ function ShareSnippetDialog({ onClose }: { onClose: () => void }) {
       const code = getCode();
       console.log(code, 'COde with Error');
 
-      await createSnippet({ title, language, code });
+      // await createSnippet({ title, language, code });
       onClose();
       setTitle('');
       toast.success('Snippet shared successfully');
