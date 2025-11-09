@@ -2,8 +2,45 @@ import { httpRouter } from 'convex/server';
 import { httpAction } from './_generated/server';
 import { Webhook } from 'svix';
 import { WebhookEvent } from '@clerk/nextjs/server';
-import { api } from './_generated/api';
+import { api, internal } from './_generated/api';
 const http = httpRouter();
+
+http.route({
+  path: '/lemon-sqz',
+  method: 'POST',
+  handler: httpAction(async (ctx, request) => {
+    const payloadString = await request.text();
+    const signature = request.headers.get('X-Signature');
+
+    if (!signature) {
+      return new Response('Missing signature', { status: 400 });
+    }
+
+    try {
+      const payload = await ctx.runAction(internal.lemonSqz.verifyWebhook, {
+        payload: payloadString,
+        signature,
+      });
+
+      if (payload.meta.event_name === 'order_created') {
+        const { data } = payload;
+        const { success } = await ctx.runMutation(api.users.upgradeUserToPro, {
+          email: data.attributes.user_email,
+          lemonSqueezyCustomerId: data.attributes.customer_id.toString(),
+          lemonSqueezyOrderId: data.id.toString(),
+          amount: data.attributes.total,
+        });
+        if (success) {
+          return new Response('User upgraded to Pro', { status: 200 });
+        }
+      }
+      return new Response('Webhook processed', { status: 200 });
+    } catch (error) {
+      console.error('Error processing Lemon Squeezy webhook:', error);
+      return new Response('Error occurred', { status: 400 });
+    }
+  }),
+});
 
 http.route({
   path: '/clerk-webhook',

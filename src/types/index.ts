@@ -62,5 +62,6 @@ export interface Snippet {
   language: string;
   code: string;
   title: string;
+  description?: string;
   userName: string;
 }

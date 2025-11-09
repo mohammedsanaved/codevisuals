@@ -1,19 +1,21 @@
 import { useCodeEditorStore } from '@/store/useCodeEditor';
 // import { useMutation } from 'convex/react';
 import { useState } from 'react';
-// import { api } from '../../../../convex/_generated/api';
+import { api } from '../../../../convex/_generated/api';
 import { XIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import { useUser } from '@clerk/nextjs';
+import { useMutation } from 'convex/react';
 
 function ShareSnippetDialog({ onClose }: { onClose: () => void }) {
   const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [isSharing, setIsSharing] = useState(false);
-  const { getCode } = useCodeEditorStore();
+  const { getCode, language } = useCodeEditorStore();
   const { isSignedIn } = useUser();
 
-  // const createSnippet = useMutation(api.snippets.createSnippet);
+  const createSnippet = useMutation(api.snippets.createSnippet);
 
   const handleShare = async (e: React.FormEvent) => {
     // debugger;
@@ -25,7 +27,7 @@ function ShareSnippetDialog({ onClose }: { onClose: () => void }) {
       const code = getCode();
       console.log(code, 'COde with Error');
 
-      // await createSnippet({ title, language, code });
+      await createSnippet({ title, language, description, code });
       onClose();
       setTitle('');
       toast.success('Snippet shared successfully');
@@ -68,6 +70,24 @@ function ShareSnippetDialog({ onClose }: { onClose: () => void }) {
                 id='title'
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                className='w-full px-3 py-2 bg-[#313244] border border-[#313244] rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500  '
+                placeholder='Enter snippet title'
+                required
+              />
+            </div>
+            <div className='mb-4'>
+              <label
+                htmlFor='title'
+                className='block text-sm font-medium text-gray-400 mb-2'
+              >
+                Description (optional)
+              </label>
+
+              <input
+                type='text'
+                id='title'
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className='w-full px-3 py-2 bg-[#313244] border border-[#313244] rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500  '
                 placeholder='Enter snippet title'
                 required

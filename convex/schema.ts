@@ -24,7 +24,7 @@ export default defineSchema({
     userId: v.string(),
     language: v.string(),
     code: v.string(),
-    name: v.string(),
+    title: v.string(),
     description: v.optional(v.string()),
     userName: v.string(), // store user's name for easy access
   }).index('by_user_id', ['userId']),

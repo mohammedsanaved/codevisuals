@@ -112,6 +112,9 @@ function SnippetCard({ snippet }: { snippet: Snippet }) {
                 <h2 className='text-xl font-semibold text-white mb-2 line-clamp-1 group-hover:text-blue-400 transition-colors'>
                   {snippet.title}
                 </h2>
+                <p className='text-sm font-medium text-gray-400 mb-2 line-clamp-1 group-hover:text-blue-400 transition-colors'>
+                  {snippet.description}
+                </p>
                 <div className='flex items-center gap-3 text-sm text-gray-400'>
                   <div className='flex items-center gap-2'>
                     <div className='p-1 rounded-md bg-gray-800/50'>

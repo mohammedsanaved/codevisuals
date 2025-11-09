@@ -1,5 +1,5 @@
-import { useQuery } from 'convex/react';
-import { api } from '../../../../convex/_generated/api';
+// import { useQuery } from 'convex/react';
+// import { api } from '../../../../convex/_generated/api';
 import {
   Activity,
   Code2,
@@ -14,6 +14,8 @@ import { motion } from 'framer-motion';
 import { Id } from '../../../../convex/_generated/dataModel';
 
 import { UserResource } from '@clerk/types';
+import { useQuery } from 'convex/react';
+import { api } from '../../../../convex/_generated/api';
 
 interface ProfileHeaderProps {
   userStats: {
